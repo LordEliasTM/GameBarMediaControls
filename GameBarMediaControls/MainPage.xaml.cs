@@ -13,7 +13,6 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.Media.Control;
-using System.Threading;
 
 namespace GameBarMediaControls
 {
