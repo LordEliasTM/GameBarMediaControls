@@ -9,10 +9,34 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <ComboBox x:Name="sessionsCombo" Margin="10,10,0,0" Width="182"/>
-        <Button Content="Play / Pause" Margin="98,47,0,0"  VerticalAlignment="Top" Click="Button_Click_PlayPause"/>
-        <Button Content="Next Track"   Margin="197,47,0,0" VerticalAlignment="Top" Click="Button_Click_SkipNext"/>
-        <Button Content="Prev Track"   Margin="10,47,0,0"  VerticalAlignment="Top" Click="Button_Click_SkipPrev"/>
-        <Button Content="Stop"         Margin="287,47,0,0" VerticalAlignment="Top" Click="Button_Click_Stop"/>
+        <ComboBox x:Name="sessionsCombo" Margin="10,10,0,0" Width="215"/>
+        <Button Margin="10,47,0,0"  VerticalAlignment="Top" Click="Button_Click_SkipPrev" Padding="0,0,0,0" Height="50" Width="50">
+            <Image HorizontalAlignment="Center" Height="50" VerticalAlignment="Center" Width="50" Source="/Assets/Prev.png"/>
+        </Button>
+        <Button Margin="65,47,0,0"  VerticalAlignment="Top" Click="Button_Click_PlayPause" Padding="0,0,0,0" Height="50" Width="50">
+            <Image HorizontalAlignment="Center" Height="50" VerticalAlignment="Center" Width="50" Source="/Assets/Play.png"/>
+        </Button>
+        <Button Margin="120,47,0,0" VerticalAlignment="Top" Click="Button_Click_SkipNext" Padding="0,0,0,0" Height="50" Width="50">
+            <Image HorizontalAlignment="Center" Height="50" VerticalAlignment="Center" Width="50" Source="/Assets/Prev.png" RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <CompositeTransform Rotation="180"/>
+                </Image.RenderTransform>
+            </Image>
+        </Button>
+        <Button Margin="175,47,0,0" VerticalAlignment="Top" Click="Button_Click_Stop" Padding="0,0,0,0" Height="50" Width="50">
+            <Image HorizontalAlignment="Center" Height="50" VerticalAlignment="Center" Width="50" Source="/Assets/Stop.png"/>
+        </Button>
+
+        <Image x:Name="thumbnail" HorizontalAlignment="Left" Height="100" Margin="230,10,0,0" VerticalAlignment="Top" Width="100"/>
+
+        <TextBlock x:Name="title" HorizontalAlignment="Left" Margin="10,102,0,0" TextWrapping="Wrap" Text="##Title" VerticalAlignment="Top"/>
+        <TextBlock x:Name="artist" HorizontalAlignment="Left" Margin="10,126,0,0" TextWrapping="Wrap" Text="##Artist" VerticalAlignment="Top"/>
+
+        
+        <TextBox x:Name="debugOutput" HorizontalAlignment="Left" Margin="419,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="200" Width="326" IsReadOnly="True" AcceptsReturn="True"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="429,306,0,0" TextWrapping="Wrap" Text="##Time" VerticalAlignment="Top"/>
+        <Slider x:Name="timeSlider" HorizontalAlignment="Left" Margin="492,299,0,0" VerticalAlignment="Top" Width="253"/>
+        <Button Content="Button" Margin="551,250,0,0" VerticalAlignment="Top" Click="Button_Click"/>
     </Grid>
 </Page>
