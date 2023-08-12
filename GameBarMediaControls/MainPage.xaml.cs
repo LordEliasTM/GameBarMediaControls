@@ -30,6 +30,8 @@ namespace GameBarMediaControls
         private GlobalSystemMediaTransportControlsSession selectedSession = null;
         private string selectedItem = null;
 
+        private List<int> handlersAddedHashes = new List<int>();
+
 
         private async void init() {
             gsmtcsm = await GlobalSystemMediaTransportControlsSessionManager.RequestAsync();
@@ -42,16 +44,24 @@ namespace GameBarMediaControls
         private async void Gsmtcsm_SessionsChanged(GlobalSystemMediaTransportControlsSessionManager sender, SessionsChangedEventArgs args) {
             await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => {
                 GetSessions();
-                foreach (var session in sessions.Values) {
-                    session.MediaPropertiesChanged += Session_MediaPropertiesChanged;
-                }
+            });
+        }
+
+        private async void Session_PlaybackInfoChanged(GlobalSystemMediaTransportControlsSession sender, PlaybackInfoChangedEventArgs args) {
+            if (sender != selectedSession) return;
+            await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => {
+                debugOutput.Text = debugOutput.Text + "Playback" + "\n";
+                ShowMetadata();
+                RefreshButtons();
             });
         }
 
         private async void Session_MediaPropertiesChanged(GlobalSystemMediaTransportControlsSession sender, MediaPropertiesChangedEventArgs args) {
-            if (sender != selectedSession) return; 
+            if (sender != selectedSession) return;
             await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => {
+                debugOutput.Text = debugOutput.Text + "Media" + "\n";
                 ShowMetadata();
+                RefreshButtons();
             });
         }
 
@@ -61,6 +71,16 @@ namespace GameBarMediaControls
             sessionsCombo.Items.Clear();
             foreach (var key in sessions.Keys) {
                 sessionsCombo.Items.Add(key);
+            }
+
+            // add event listeners
+            foreach (var session in sessions.Values) {
+                if(handlersAddedHashes.Contains(session.GetHashCode())) continue;
+
+                session.MediaPropertiesChanged += Session_MediaPropertiesChanged;
+                session.PlaybackInfoChanged += Session_PlaybackInfoChanged;
+
+                handlersAddedHashes.Add(session.GetHashCode());
             }
 
             if (selectedItem != null && sessions.Keys.Contains(selectedItem)) sessionsCombo.SelectedItem = selectedItem;
@@ -95,11 +115,39 @@ namespace GameBarMediaControls
             }
         }
 
+        private void RefreshButtons() {
+            if (selectedSession == null) return;
+            var playbackInfo = selectedSession.GetPlaybackInfo();
+
+            switch(playbackInfo.PlaybackStatus) {
+                case GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing:
+                    imgPlay.Visibility = Visibility.Collapsed;
+                    imgPause.Visibility = Visibility.Visible;
+                    break;
+                case GlobalSystemMediaTransportControlsSessionPlaybackStatus.Paused:
+                    imgPlay.Visibility = Visibility.Visible;
+                    imgPause.Visibility = Visibility.Collapsed;
+                    break;
+            }
+
+            btnPrev.IsEnabled = playbackInfo.Controls.IsPreviousEnabled;
+            btnPlayPause.IsEnabled = playbackInfo.Controls.IsPlayPauseToggleEnabled;
+            btnNext.IsEnabled = playbackInfo.Controls.IsNextEnabled;
+            btnStop.IsEnabled = playbackInfo.Controls.IsStopEnabled;
+
+            imgPrev.Opacity = playbackInfo.Controls.IsPreviousEnabled ? 1 : 0.25;
+            imgPlay.Opacity = playbackInfo.Controls.IsPlayPauseToggleEnabled ? 1 : 0.25;
+            imgPause.Opacity = playbackInfo.Controls.IsPlayPauseToggleEnabled ? 1 : 0.25;
+            imgNext.Opacity = playbackInfo.Controls.IsNextEnabled ? 1 : 0.25;
+            imgStop.Opacity = playbackInfo.Controls.IsStopEnabled ? 1 : 0.25;
+        }
+
         private void SessionsCombo_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (sessionsCombo.SelectedItem == null) return;
             selectedSession = sessions[sessionsCombo.SelectedItem as string];
             selectedItem = sessionsCombo.SelectedItem as string;
             ShowMetadata();
+            RefreshButtons();
         }
 
 
