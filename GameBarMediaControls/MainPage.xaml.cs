@@ -27,7 +27,7 @@ namespace GameBarMediaControls
 
         private GlobalSystemMediaTransportControlsSessionManager gsmtcsm = null;
         private IDictionary<string, GlobalSystemMediaTransportControlsSession> sessions = null;
-        private GlobalSystemMediaTransportControlsSession session = null;
+        private GlobalSystemMediaTransportControlsSession selectedSession = null;
         private string selectedItem = null;
 
 
@@ -40,9 +40,18 @@ namespace GameBarMediaControls
         }
 
         private async void Gsmtcsm_SessionsChanged(GlobalSystemMediaTransportControlsSessionManager sender, SessionsChangedEventArgs args) {
-            await sessionsCombo.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => {
-                debugOutput.Text = debugOutput.Text + args.ToString() + "\n";
+            await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => {
                 GetSessions();
+                foreach (var session in sessions.Values) {
+                    session.MediaPropertiesChanged += Session_MediaPropertiesChanged;
+                }
+            });
+        }
+
+        private async void Session_MediaPropertiesChanged(GlobalSystemMediaTransportControlsSession sender, MediaPropertiesChangedEventArgs args) {
+            if (sender != selectedSession) return; 
+            await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => {
+                ShowMetadata();
             });
         }
 
@@ -57,13 +66,13 @@ namespace GameBarMediaControls
             if (selectedItem != null && sessions.Keys.Contains(selectedItem)) sessionsCombo.SelectedItem = selectedItem;
             else sessionsCombo.SelectedIndex = 0;
 
-            if (sessionsCombo.SelectedItem != null) session = sessions[sessionsCombo.SelectedItem as string];
-            else session = null;
+            if (sessionsCombo.SelectedItem != null) selectedSession = sessions[sessionsCombo.SelectedItem as string];
+            else selectedSession = null;
         }
 
-        private async void GetMetadata() {
-            if (session == null) return;
-            var mediaProperties = await session.TryGetMediaPropertiesAsync();
+        private async void ShowMetadata() {
+            if (selectedSession == null) return;
+            var mediaProperties = await selectedSession.TryGetMediaPropertiesAsync();
 
             if (mediaProperties.Thumbnail != null) {
                 var bitmap = new BitmapImage();
@@ -86,39 +95,37 @@ namespace GameBarMediaControls
             }
         }
 
-        // TODO implement events fired by the session
-
         private void SessionsCombo_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (sessionsCombo.SelectedItem == null) return;
-            session = sessions[sessionsCombo.SelectedItem as string];
+            selectedSession = sessions[sessionsCombo.SelectedItem as string];
             selectedItem = sessionsCombo.SelectedItem as string;
-            GetMetadata();
+            ShowMetadata();
         }
 
 
         private async void Button_Click_PlayPause(object sender, RoutedEventArgs e) {
-            if(session != null) await session.TryTogglePlayPauseAsync();
+            if(selectedSession != null) await selectedSession.TryTogglePlayPauseAsync();
         }
 
         private async void Button_Click_SkipNext(object sender, RoutedEventArgs e) {
-            if (session != null) await session.TrySkipNextAsync();
+            if (selectedSession != null) await selectedSession.TrySkipNextAsync();
         }
 
         private async void Button_Click_SkipPrev(object sender, RoutedEventArgs e) {
-            if (session != null) await session.TrySkipPreviousAsync();
+            if (selectedSession != null) await selectedSession.TrySkipPreviousAsync();
         }
 
         private async void Button_Click_Stop(object sender, RoutedEventArgs e) {
-            if (session != null) await session.TryStopAsync();
+            if (selectedSession != null) await selectedSession.TryStopAsync();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e) {
-            if (session != null) {
-                var timelineProperties = session.GetTimelineProperties();
-                var playbackInfo = session.GetPlaybackInfo();
-                var mediaProperties = await session.TryGetMediaPropertiesAsync();
-                timeSlider.Maximum = session.GetTimelineProperties().EndTime.Seconds;
-                timeSlider.Value = session.GetTimelineProperties().Position.Seconds;
+            if (selectedSession != null) {
+                var timelineProperties = selectedSession.GetTimelineProperties();
+                var playbackInfo = selectedSession.GetPlaybackInfo();
+                var mediaProperties = await selectedSession.TryGetMediaPropertiesAsync();
+                timeSlider.Maximum = selectedSession.GetTimelineProperties().EndTime.Seconds;
+                timeSlider.Value = selectedSession.GetTimelineProperties().Position.Seconds;
 
                 var bitmap = new BitmapImage();
                 var stream = await mediaProperties.Thumbnail.OpenReadAsync();
