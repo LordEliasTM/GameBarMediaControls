@@ -62,16 +62,16 @@
 							<Window>
 								<AllowForegroundTransparency>true</AllowForegroundTransparency>
 								<Size>
-									<Height>300</Height>
-									<Width>400</Width>
-									<MinHeight>150</MinHeight>
-									<MinWidth>200</MinWidth>
-									<MaxHeight>350</MaxHeight>
-									<MaxWidth>450</MaxWidth>
+									<Width>340</Width>
+									<Height>180</Height>
+									<MinWidth>340</MinWidth>
+									<MinHeight>180</MinHeight>
+									<MaxWidth>340</MaxWidth>
+									<MaxHeight>180</MaxHeight>
 								</Size>
 								<ResizeSupported>
-									<Horizontal>true</Horizontal>
-									<Vertical>true</Vertical>
+									<Horizontal>false</Horizontal>
+									<Vertical>false</Vertical>
 								</ResizeSupported>
 							</Window>
 						</GameBarWidget>
