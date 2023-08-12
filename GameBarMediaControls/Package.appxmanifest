@@ -22,7 +22,7 @@
   <Properties>
     <DisplayName>GameBarMediaControls</DisplayName>
     <PublisherDisplayName>Elias</PublisherDisplayName>
-    <Logo>Assets\StoreLogo.png</Logo>
+    <Logo>Assets\Logo\StoreLogo.png</Logo>
   </Properties>
 
   <Dependencies>
@@ -39,13 +39,14 @@
       EntryPoint="GameBarMediaControls.App">
       <uap:VisualElements
         DisplayName="GameBarMediaControls"
-        Square150x150Logo="Assets\Square150x150Logo.png"
-        Square44x44Logo="Assets\Square44x44Logo.png"
+        Square150x150Logo="Assets\Logo\Square150x150Logo.png"
+        Square44x44Logo="Assets\Logo\Square44x44Logo.png"
         Description="GameBarMediaControls"
         BackgroundColor="transparent"
 		AppListEntry="none">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:DefaultTile Wide310x150Logo="Assets\Logo\Wide310x150Logo.png" Square71x71Logo="Assets\Logo\SmallTile.png" Square310x310Logo="Assets\Logo\LargeTile.png"/>
+        <uap:SplashScreen Image="Assets\Logo\SplashScreen.png"/>
+        <uap:LockScreen BadgeLogo="Assets\Logo\BadgeLogo.png" Notification="badge"/>
       </uap:VisualElements>
         <Extensions>
             <uap3:Extension Category="windows.appExtension">
