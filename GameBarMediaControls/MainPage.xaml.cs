@@ -22,7 +22,7 @@ namespace GameBarMediaControls
         public MainPage()
         {
             this.InitializeComponent();
-            init();
+            Init();
         }
 
         private GlobalSystemMediaTransportControlsSessionManager gsmtcsm = null;
@@ -30,10 +30,10 @@ namespace GameBarMediaControls
         private GlobalSystemMediaTransportControlsSession selectedSession = null;
         private string selectedItem = null;
 
-        private List<int> handlersAddedHashes = new List<int>();
+        private readonly List<int> handlersAddedHashes = new List<int>();
 
 
-        private async void init() {
+        private async void Init() {
             gsmtcsm = await GlobalSystemMediaTransportControlsSessionManager.RequestAsync();
             gsmtcsm.SessionsChanged += Gsmtcsm_SessionsChanged;
             sessionsCombo.SelectionChanged += SessionsCombo_SelectionChanged;
@@ -95,9 +95,10 @@ namespace GameBarMediaControls
             var mediaProperties = await selectedSession.TryGetMediaPropertiesAsync();
 
             if (mediaProperties.Thumbnail != null) {
-                var bitmap = new BitmapImage();
-                bitmap.DecodePixelHeight = 100;
-                bitmap.DecodePixelWidth = 100;
+                var bitmap = new BitmapImage {
+                    DecodePixelHeight = 100,
+                    DecodePixelWidth = 100
+                };
                 var stream = await mediaProperties.Thumbnail.OpenReadAsync();
                 stream.Seek(0);
                 await bitmap.SetSourceAsync(stream);
