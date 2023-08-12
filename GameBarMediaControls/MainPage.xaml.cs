@@ -67,6 +67,8 @@ namespace GameBarMediaControls
 
             if (mediaProperties.Thumbnail != null) {
                 var bitmap = new BitmapImage();
+                bitmap.DecodePixelHeight = 100;
+                bitmap.DecodePixelWidth = 100;
                 var stream = await mediaProperties.Thumbnail.OpenReadAsync();
                 stream.Seek(0);
                 await bitmap.SetSourceAsync(stream);
