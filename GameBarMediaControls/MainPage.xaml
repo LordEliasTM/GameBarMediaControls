@@ -6,6 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" Background="#FF252525">
+    <Page.Resources>
+        <local:BoolToOpacityConverter x:Key="BoolToOpacityConverter"/>
+    </Page.Resources>
 
     <Grid>
         <StackPanel Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
@@ -13,23 +16,23 @@
 
             <StackPanel Orientation="Horizontal" Margin="0,18,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50">
                 <Button x:Name="btnPrev" Click="Button_Click_SkipPrev" Padding="0,0,0,0" Width="50">
-                    <Image x:Name="imgPrev" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50" Source="/Assets/Prev_w.png"/>
+                    <Image x:Name="imgPrev" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50" Source="/Assets/Prev_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnPrev}"/>
                 </Button>
                 <Button x:Name="btnPlayPause" Margin="5,0,0,0" Click="Button_Click_PlayPause" Padding="0,0,0,0" Width="50">
                     <RelativePanel>
-                        <Image x:Name="imgPlay" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50" Source="/Assets/Play_w.png"/>
-                        <Image x:Name="imgPause" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50" Source="/Assets/Pause_w.png"/>
+                        <Image x:Name="imgPlay" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50" Source="/Assets/Play_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnPlayPause}"/>
+                        <Image x:Name="imgPause" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50" Source="/Assets/Pause_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnPlayPause}"/>
                     </RelativePanel>
                 </Button>
                 <Button x:Name="btnNext" Margin="5,0,0,0" Click="Button_Click_SkipNext" Padding="0,0,0,0" Width="50">
-                    <Image x:Name="imgNext" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50" Source="/Assets/Prev_w.png" RenderTransformOrigin="0.5,0.5">
+                    <Image x:Name="imgNext" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50" Source="/Assets/Prev_w.png" RenderTransformOrigin="0.5,0.5" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnNext}">
                         <Image.RenderTransform>
                             <CompositeTransform Rotation="180"/>
                         </Image.RenderTransform>
                     </Image>
                 </Button>
                 <Button x:Name="btnStop" Margin="5,0,0,0" Click="Button_Click_Stop" Padding="0,0,0,0" Width="50">
-                    <Image x:Name="imgStop" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50" Source="/Assets/Stop_w.png"/>
+                    <Image x:Name="imgStop" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50" Source="/Assets/Stop_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnStop}"/>
                 </Button>
             </StackPanel>
 
@@ -38,7 +41,7 @@
                 <TextBlock x:Name="artist" Text="##Artist" VerticalAlignment="Top" TextTrimming="CharacterEllipsis"/>
             </StackPanel>
 
-            <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+            <StackPanel Margin="0,5,0,0" Orientation="Horizontal" Visibility="Collapsed">
                 <TextBlock x:Name="timeText" Text="00:00:00" VerticalAlignment="Center" TextAlignment="Right" Width="51.3515"/>
                 <Slider x:Name="timeSlider" Margin="5,0,5,0" VerticalAlignment="Center" Width="211" HorizontalAlignment="Center"/>
                 <TextBlock x:Name="timeText2" Text="00:00:00" VerticalAlignment="Center" TextAlignment="Left" Width="51.3515"/>

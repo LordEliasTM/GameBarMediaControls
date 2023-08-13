@@ -141,12 +141,6 @@ namespace GameBarMediaControls
             btnPlayPause.IsEnabled = playbackInfo.Controls.IsPlayPauseToggleEnabled;
             btnNext.IsEnabled = playbackInfo.Controls.IsNextEnabled;
             btnStop.IsEnabled = playbackInfo.Controls.IsStopEnabled;
-
-            imgPrev.Opacity = playbackInfo.Controls.IsPreviousEnabled ? 1 : 0.25;
-            imgPlay.Opacity = playbackInfo.Controls.IsPlayPauseToggleEnabled ? 1 : 0.25;
-            imgPause.Opacity = playbackInfo.Controls.IsPlayPauseToggleEnabled ? 1 : 0.25;
-            imgNext.Opacity = playbackInfo.Controls.IsNextEnabled ? 1 : 0.25;
-            imgStop.Opacity = playbackInfo.Controls.IsStopEnabled ? 1 : 0.25;
         }
 
         private void UpdateTimeline() {
