@@ -99,6 +99,7 @@ namespace GameBarMediaControls
         private async void ShowMetadata() {
             if (selectedSession == null) return;
             var mediaProperties = await selectedSession.TryGetMediaPropertiesAsync();
+            if (mediaProperties == null) return;
 
             if (mediaProperties.Thumbnail != null) {
                 var bitmap = new BitmapImage {
@@ -125,6 +126,7 @@ namespace GameBarMediaControls
         private void RefreshButtons() {
             if (selectedSession == null) return;
             var playbackInfo = selectedSession.GetPlaybackInfo();
+            if(playbackInfo == null) return;
 
             switch(playbackInfo.PlaybackStatus) {
                 case GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing:
@@ -146,6 +148,7 @@ namespace GameBarMediaControls
         private void UpdateTimeline() {
             if (selectedSession == null) return;
             var timelineProperties = selectedSession.GetTimelineProperties();
+            if (timelineProperties == null) return;
 
             timeSlider.Minimum = Math.Round(timelineProperties.StartTime.TotalSeconds);
             timeSlider.Maximum = Math.Round(timelineProperties.EndTime.TotalSeconds);
