@@ -15,24 +15,24 @@
             <ComboBox x:Name="sessionsCombo" Width="215"/>
 
             <StackPanel Orientation="Horizontal" Margin="0,18,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50">
-                <Button x:Name="btnPrev" Click="Button_Click_SkipPrev" Padding="0,0,0,0" Width="50">
-                    <Image x:Name="imgPrev" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50" Source="/Assets/Prev_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnPrev}"/>
+                <Button x:Name="btnPrev" Click="Button_Click_SkipPrev" Padding="0,0,0,0" Width="50" Height="50">
+                    <Image x:Name="imgPrev" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="32" Source="/Assets/Prev_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnPrev}"/>
                 </Button>
-                <Button x:Name="btnPlayPause" Margin="5,0,0,0" Click="Button_Click_PlayPause" Padding="0,0,0,0" Width="50">
+                <Button x:Name="btnPlayPause" Margin="5,0,0,0" Click="Button_Click_PlayPause" Padding="0,0,0,0" Width="50" Height="50">
                     <RelativePanel>
-                        <Image x:Name="imgPlay" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50" Source="/Assets/Play_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnPlayPause}"/>
-                        <Image x:Name="imgPause" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50" Source="/Assets/Pause_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnPlayPause}"/>
+                        <Image x:Name="imgPlay" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="32" Source="/Assets/Play_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnPlayPause}"/>
+                        <Image x:Name="imgPause" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="32" Source="/Assets/Pause_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnPlayPause}"/>
                     </RelativePanel>
                 </Button>
-                <Button x:Name="btnNext" Margin="5,0,0,0" Click="Button_Click_SkipNext" Padding="0,0,0,0" Width="50">
-                    <Image x:Name="imgNext" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50" Source="/Assets/Prev_w.png" RenderTransformOrigin="0.5,0.5" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnNext}">
+                <Button x:Name="btnNext" Margin="5,0,0,0" Click="Button_Click_SkipNext" Padding="0,0,0,0" Width="50" Height="50">
+                    <Image x:Name="imgNext" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="32" Source="/Assets/Prev_w.png" RenderTransformOrigin="0.5,0.5" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnNext}">
                         <Image.RenderTransform>
                             <CompositeTransform Rotation="180"/>
                         </Image.RenderTransform>
                     </Image>
                 </Button>
-                <Button x:Name="btnStop" Margin="5,0,0,0" Click="Button_Click_Stop" Padding="0,0,0,0" Width="50">
-                    <Image x:Name="imgStop" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50" Source="/Assets/Stop_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnStop}"/>
+                <Button x:Name="btnStop" Margin="5,0,0,0" Click="Button_Click_Stop" Padding="0,0,0,0" Width="50" Height="50">
+                    <Image x:Name="imgStop" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="32" Source="/Assets/Stop_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnStop}"/>
                 </Button>
             </StackPanel>
 
@@ -49,9 +49,5 @@
         </StackPanel>
 
         <Image x:Name="thumbnail" HorizontalAlignment="Left" Height="100" Margin="230,10,0,0" VerticalAlignment="Top" Width="100"/>
-
-
-
-        <TextBox x:Name="debugOutput" HorizontalAlignment="Left" Margin="419,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="200" Width="326" IsReadOnly="True" AcceptsReturn="True"/>
     </Grid>
 </Page>
