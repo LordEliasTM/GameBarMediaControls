@@ -50,7 +50,6 @@ namespace GameBarMediaControls
         private async void Session_PlaybackInfoChanged(GlobalSystemMediaTransportControlsSession sender, PlaybackInfoChangedEventArgs args) {
             if (sender != selectedSession) return;
             await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => {
-                debugOutput.Text = debugOutput.Text + "Playback" + "\n";
                 ShowMetadata();
                 RefreshButtons();
             });
@@ -59,9 +58,15 @@ namespace GameBarMediaControls
         private async void Session_MediaPropertiesChanged(GlobalSystemMediaTransportControlsSession sender, MediaPropertiesChangedEventArgs args) {
             if (sender != selectedSession) return;
             await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => {
-                debugOutput.Text = debugOutput.Text + "Media" + "\n";
                 ShowMetadata();
                 RefreshButtons();
+            });
+        }
+
+        private async void Session_TimelinePropertiesChanged(GlobalSystemMediaTransportControlsSession sender, TimelinePropertiesChangedEventArgs args) {
+            if (sender != selectedSession) return;
+            await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => {
+                UpdateTimeline();
             });
         }
 
@@ -79,6 +84,7 @@ namespace GameBarMediaControls
 
                 session.MediaPropertiesChanged += Session_MediaPropertiesChanged;
                 session.PlaybackInfoChanged += Session_PlaybackInfoChanged;
+                session.TimelinePropertiesChanged += Session_TimelinePropertiesChanged;
 
                 handlersAddedHashes.Add(session.GetHashCode());
             }
@@ -143,12 +149,32 @@ namespace GameBarMediaControls
             imgStop.Opacity = playbackInfo.Controls.IsStopEnabled ? 1 : 0.25;
         }
 
+        private void UpdateTimeline() {
+            if (selectedSession == null) return;
+            var timelineProperties = selectedSession.GetTimelineProperties();
+
+            timeSlider.Minimum = Math.Round(timelineProperties.StartTime.TotalSeconds);
+            timeSlider.Maximum = Math.Round(timelineProperties.EndTime.TotalSeconds);
+            timeSlider.Value = Math.Round(timelineProperties.Position.TotalSeconds);
+
+            if (timelineProperties.EndTime.TotalHours < 1.0) {
+                timeText.Text = timelineProperties.Position.ToString(@"%m\:ss");
+                timeText2.Text = timelineProperties.EndTime.ToString(@"%m\:ss");
+
+            }
+            else {
+                timeText.Text = timelineProperties.Position.ToString(@"%h\:mm\:ss");
+                timeText2.Text = timelineProperties.EndTime.ToString(@"%h\:mm\:ss");
+            }
+        }
+
         private void SessionsCombo_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (sessionsCombo.SelectedItem == null) return;
             selectedSession = sessions[sessionsCombo.SelectedItem as string];
             selectedItem = sessionsCombo.SelectedItem as string;
             ShowMetadata();
             RefreshButtons();
+            UpdateTimeline();
         }
 
 
@@ -166,24 +192,6 @@ namespace GameBarMediaControls
 
         private async void Button_Click_Stop(object sender, RoutedEventArgs e) {
             if (selectedSession != null) await selectedSession.TryStopAsync();
-        }
-
-        private async void Button_Click(object sender, RoutedEventArgs e) {
-            if (selectedSession != null) {
-                var timelineProperties = selectedSession.GetTimelineProperties();
-                var playbackInfo = selectedSession.GetPlaybackInfo();
-                var mediaProperties = await selectedSession.TryGetMediaPropertiesAsync();
-                timeSlider.Maximum = selectedSession.GetTimelineProperties().EndTime.Seconds;
-                timeSlider.Value = selectedSession.GetTimelineProperties().Position.Seconds;
-
-                var bitmap = new BitmapImage();
-                var stream = await mediaProperties.Thumbnail.OpenReadAsync();
-                stream.Seek(0);
-                await bitmap.SetSourceAsync(stream);
-                thumbnail.Source = bitmap;
-
-                title.Text = mediaProperties.Title;
-            }
         }
     }
 }

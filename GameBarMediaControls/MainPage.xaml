@@ -37,6 +37,12 @@
                 <TextBlock x:Name="title" Text="##Title" VerticalAlignment="Top" TextTrimming="CharacterEllipsis" FontSize="24"/>
                 <TextBlock x:Name="artist" Text="##Artist" VerticalAlignment="Top" TextTrimming="CharacterEllipsis"/>
             </StackPanel>
+
+            <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                <TextBlock x:Name="timeText" Text="00:00:00" VerticalAlignment="Center" TextAlignment="Right" Width="51.3515"/>
+                <Slider x:Name="timeSlider" Margin="5,0,5,0" VerticalAlignment="Center" Width="211" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="timeText2" Text="00:00:00" VerticalAlignment="Center" TextAlignment="Left" Width="51.3515"/>
+            </StackPanel>
         </StackPanel>
 
         <Image x:Name="thumbnail" HorizontalAlignment="Left" Height="100" Margin="230,10,0,0" VerticalAlignment="Top" Width="100"/>
@@ -44,9 +50,5 @@
 
 
         <TextBox x:Name="debugOutput" HorizontalAlignment="Left" Margin="419,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="200" Width="326" IsReadOnly="True" AcceptsReturn="True"/>
-
-        <TextBlock HorizontalAlignment="Left" Margin="429,306,0,0" TextWrapping="Wrap" Text="##Time" VerticalAlignment="Top"/>
-        <Slider x:Name="timeSlider" HorizontalAlignment="Left" Margin="492,299,0,0" VerticalAlignment="Top" Width="253"/>
-        <Button Content="Button" Margin="551,250,0,0" VerticalAlignment="Top" Click="Button_Click"/>
     </Grid>
 </Page>
