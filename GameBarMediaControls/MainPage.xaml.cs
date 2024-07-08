@@ -22,6 +22,13 @@ namespace GameBarMediaControls
         public MainPage()
         {
             this.InitializeComponent();
+
+#if DEBUG
+            debugPanel.Visibility = Visibility.Visible;
+#else
+            debugPanel.Visibility = Visibility.Collapsed;
+#endif
+
             Init();
         }
 
@@ -80,6 +87,7 @@ namespace GameBarMediaControls
 
             // add event listeners
             foreach (var session in sessions.Values) {
+                // continue if listeners already added to this session
                 if(handlersAddedHashes.Contains(session.GetHashCode())) continue;
 
                 session.MediaPropertiesChanged += Session_MediaPropertiesChanged;
@@ -174,7 +182,6 @@ namespace GameBarMediaControls
             UpdateTimeline();
         }
 
-
         private async void Button_Click_PlayPause(object sender, RoutedEventArgs e) {
             if(selectedSession != null) await selectedSession.TryTogglePlayPauseAsync();
         }
@@ -189,6 +196,18 @@ namespace GameBarMediaControls
 
         private async void Button_Click_Stop(object sender, RoutedEventArgs e) {
             if (selectedSession != null) await selectedSession.TryStopAsync();
+        }
+
+        private async void Button_Click_Shuffle(object sender, RoutedEventArgs e) {
+            var tprop = selectedSession.GetTimelineProperties();
+            (sender as Button).Content = tprop.Position.ToString();
+
+            // no worky in opera spotify, so not goina implement
+        }
+
+        private async void Button_Click_Repeat(object sender, RoutedEventArgs e) {
+            // no worky in opera spotify, so not goina implement
+            
         }
     }
 }
