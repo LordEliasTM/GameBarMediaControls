@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.Media.Control;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.Storage;
 
 namespace GameBarMediaControls
 {
@@ -199,15 +200,26 @@ namespace GameBarMediaControls
         }
 
         private async void Button_Click_Shuffle(object sender, RoutedEventArgs e) {
-            var tprop = selectedSession.GetTimelineProperties();
-            (sender as Button).Content = tprop.Position.ToString();
+            //var tprop = selectedSession.GetTimelineProperties();
+            //(sender as Button).Content = tprop.Position.ToString();
+            var settings = ApplicationData.Current.RoamingSettings;
+            (sender as Button).Content = string.Join(";", settings.Values["test"] as string[]);
+            heartCheckbox.IsChecked = true;
 
             // no worky in opera spotify, so not goina implement
         }
 
         private async void Button_Click_Repeat(object sender, RoutedEventArgs e) {
+            var settings = ApplicationData.Current.RoamingSettings;
+            settings.Values["test"] = new string[] { "asdf", "keke" };
+
             // no worky in opera spotify, so not goina implement
-            
+        }
+
+        private void heartCheckbox_Checked(object sender, RoutedEventArgs e) {
+            dbgRepeat.Content = "asd";
+            // TODO https://stackoverflow.com/questions/16595063/how-to-set-checkbox-ischecked-without-raising-event
+            // TODO make shi prio opera.exe and save shi to App Data
         }
     }
 }

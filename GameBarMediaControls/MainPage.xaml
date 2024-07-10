@@ -9,32 +9,71 @@
     <Page.Resources>
         <local:BoolToOpacityConverter x:Key="BoolToOpacityConverter"/>
         <local:TimeSliderThumbToolTipValueConverter x:Key="TimeSliderThumbToolTipValueConverter"/>
+        <Style TargetType="CheckBox" x:Key="heartCheckboxStyle">
+            <Setter Property="MinHeight" Value="0"/>
+            <Setter Property="MinWidth" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <Grid>
+                            <Image x:Name="imgHeartUnchecked" Height="20" Width="20" Source="/Assets/Heart_w.png"/>
+                            <Image x:Name="imgHeartChecked" Height="20" Width="20" Source="/Assets/Heart-fill_w.png"/>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CheckStates">
+                                    <VisualState x:Name="Unchecked">
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0" To="1.0" Storyboard.TargetName="imgHeartUnchecked" Storyboard.TargetProperty="Opacity"/>
+                                            <DoubleAnimation Duration="0" To="0.0" Storyboard.TargetName="imgHeartChecked" Storyboard.TargetProperty="Opacity"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Checked">
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0" To="0.0" Storyboard.TargetName="imgHeartUnchecked" Storyboard.TargetProperty="Opacity"/>
+                                            <DoubleAnimation Duration="0" To="1.0" Storyboard.TargetName="imgHeartChecked" Storyboard.TargetProperty="Opacity"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
     <Grid>
         <StackPanel Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <ComboBox x:Name="sessionsCombo" Width="215"/>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox x:Name="sessionsCombo" Width="180"/>
+                        <CheckBox x:Name="heartCheckbox" Style="{StaticResource heartCheckboxStyle}" Margin="6,1,0,0" Checked="heartCheckbox_Checked"/>
+                    </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Margin="0,18,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50">
-                <Button x:Name="btnPrev" Click="Button_Click_SkipPrev" Padding="0,0,0,0" Width="50" Height="50">
-                    <Image x:Name="imgPrev" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="32" Source="/Assets/Prev_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnPrev}"/>
-                </Button>
-                <Button x:Name="btnPlayPause" Margin="5,0,0,0" Click="Button_Click_PlayPause" Padding="0,0,0,0" Width="50" Height="50">
-                    <RelativePanel>
-                        <Image x:Name="imgPlay" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="32" Source="/Assets/Play_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnPlayPause}"/>
-                        <Image x:Name="imgPause" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="32" Source="/Assets/Pause_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnPlayPause}"/>
-                    </RelativePanel>
-                </Button>
-                <Button x:Name="btnNext" Margin="5,0,0,0" Click="Button_Click_SkipNext" Padding="0,0,0,0" Width="50" Height="50">
-                    <Image x:Name="imgNext" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="32" Source="/Assets/Prev_w.png" RenderTransformOrigin="0.5,0.5" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnNext}">
-                        <Image.RenderTransform>
-                            <CompositeTransform Rotation="180"/>
-                        </Image.RenderTransform>
-                    </Image>
-                </Button>
-                <Button x:Name="btnStop" Margin="5,0,0,0" Click="Button_Click_Stop" Padding="0,0,0,0" Width="50" Height="50">
-                    <Image x:Name="imgStop" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="32" Source="/Assets/Stop_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnStop}"/>
-                </Button>
+                    <StackPanel Orientation="Horizontal" Margin="0,18,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50">
+                        <Button x:Name="btnPrev" Click="Button_Click_SkipPrev" Padding="0,0,0,0" Width="50" Height="50">
+                            <Image x:Name="imgPrev" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="32" Source="/Assets/Prev_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnPrev}"/>
+                        </Button>
+                        <Button x:Name="btnPlayPause" Margin="5,0,0,0" Click="Button_Click_PlayPause" Padding="0,0,0,0" Width="50" Height="50">
+                            <RelativePanel>
+                                <Image x:Name="imgPlay" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="32" Source="/Assets/Play_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnPlayPause}"/>
+                                <Image x:Name="imgPause" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="32" Source="/Assets/Pause_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnPlayPause}"/>
+                            </RelativePanel>
+                        </Button>
+                        <Button x:Name="btnNext" Margin="5,0,0,0" Click="Button_Click_SkipNext" Padding="0,0,0,0" Width="50" Height="50">
+                            <Image x:Name="imgNext" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="32" Source="/Assets/Prev_w.png" RenderTransformOrigin="0.5,0.5" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnNext}">
+                                <Image.RenderTransform>
+                                    <CompositeTransform Rotation="180"/>
+                                </Image.RenderTransform>
+                            </Image>
+                        </Button>
+                        <Button x:Name="btnStop" Margin="5,0,0,0" Click="Button_Click_Stop" Padding="0,0,0,0" Width="50" Height="50">
+                            <Image x:Name="imgStop" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="32" Source="/Assets/Stop_w.png" Opacity="{Binding IsEnabled, Converter={StaticResource BoolToOpacityConverter}, ElementName=btnStop}"/>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+
+                <Image x:Name="thumbnail" Margin="5,0,0,0" Height="100" Width="100"/>
             </StackPanel>
 
             <StackPanel Margin="5,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="320">
@@ -49,12 +88,11 @@
             </StackPanel>
         </StackPanel>
 
-        <Image x:Name="thumbnail" HorizontalAlignment="Left" Height="100" Margin="230,10,0,0" VerticalAlignment="Top" Width="100"/>
 
         <StackPanel x:Name="debugPanel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="360,10,0,0" BorderBrush="Red" BorderThickness="1" Padding="5,5,5,5">
             <TextBlock Text="Debug Panel" Margin="0,0,0,5" FontWeight="Bold"/>
             <Button Content="Shuffle" Margin="0,0,0,5" Click="Button_Click_Shuffle"/>
-            <Button Content="Repeat" Margin="0,0,0,0" Click="Button_Click_Repeat"/>
+            <Button x:Name="dbgRepeat" Content="Repeat" Margin="0,0,0,0" Click="Button_Click_Repeat"/>
         </StackPanel>
     </Grid>
 </Page>

@@ -132,6 +132,10 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Heart-fill.png" />
+    <Content Include="Assets\Heart-fill_w.png" />
+    <Content Include="Assets\Heart.png" />
+    <Content Include="Assets\Heart_w.png" />
     <Content Include="Assets\Logo\BadgeLogo.scale-100.png" />
     <Content Include="Assets\Logo\BadgeLogo.scale-125.png" />
     <Content Include="Assets\Logo\BadgeLogo.scale-150.png" />
