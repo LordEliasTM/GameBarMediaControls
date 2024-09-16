@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.Media.Control;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Storage;
+using System.Reflection;
 
 namespace GameBarMediaControls
 {
@@ -98,7 +99,11 @@ namespace GameBarMediaControls
                 handlersAddedHashes.Add(session.GetHashCode());
             }
 
-            if (selectedItem != null && sessions.Keys.Contains(selectedItem)) sessionsCombo.SelectedItem = selectedItem;
+            var settings = ApplicationData.Current.RoamingSettings;
+            var fav = settings.Values["fav"] as string;
+
+            if (sessions.Keys.Contains(fav)) sessionsCombo.SelectedItem = fav;
+            else if (selectedItem != null && sessions.Keys.Contains(selectedItem)) sessionsCombo.SelectedItem = selectedItem;
             else sessionsCombo.SelectedIndex = 0;
 
             if (sessionsCombo.SelectedItem != null) selectedSession = sessions[sessionsCombo.SelectedItem as string];
@@ -178,9 +183,13 @@ namespace GameBarMediaControls
             if (sessionsCombo.SelectedItem == null) return;
             selectedSession = sessions[sessionsCombo.SelectedItem as string];
             selectedItem = sessionsCombo.SelectedItem as string;
+
             ShowMetadata();
             RefreshButtons();
             UpdateTimeline();
+
+            var settings = ApplicationData.Current.RoamingSettings;
+            heartCheckbox.IsChecked = settings.Values["fav"] as string == selectedItem;
         }
 
         private async void Button_Click_PlayPause(object sender, RoutedEventArgs e) {
@@ -203,7 +212,7 @@ namespace GameBarMediaControls
             //var tprop = selectedSession.GetTimelineProperties();
             //(sender as Button).Content = tprop.Position.ToString();
             var settings = ApplicationData.Current.RoamingSettings;
-            (sender as Button).Content = string.Join(";", settings.Values["test"] as string[]);
+            (sender as Button).Content = settings.Values["fav"] as string;
             heartCheckbox.IsChecked = true;
 
             // no worky in opera spotify, so not goina implement
@@ -213,13 +222,22 @@ namespace GameBarMediaControls
             var settings = ApplicationData.Current.RoamingSettings;
             settings.Values["test"] = new string[] { "asdf", "keke" };
 
+            heartCheckbox.IsChecked = false;
+
             // no worky in opera spotify, so not goina implement
         }
 
         private void heartCheckbox_Checked(object sender, RoutedEventArgs e) {
-            dbgRepeat.Content = "asd";
+            // dbgRepeat.Content = "asd";
             // TODO https://stackoverflow.com/questions/16595063/how-to-set-checkbox-ischecked-without-raising-event
             // TODO make shi prio opera.exe and save shi to App Data
+        }
+
+        private void heartCheckbox_Click(object sender, RoutedEventArgs e) {
+            var ketchup = (bool)(sender as CheckBox).IsChecked;
+
+            var settings = ApplicationData.Current.RoamingSettings;
+            settings.Values["fav"] = ketchup ? selectedItem : "nothing";
         }
     }
 }

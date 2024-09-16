@@ -47,7 +47,7 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <ComboBox x:Name="sessionsCombo" Width="180"/>
-                        <CheckBox x:Name="heartCheckbox" Style="{StaticResource heartCheckboxStyle}" Margin="6,1,0,0" Checked="heartCheckbox_Checked"/>
+                        <CheckBox x:Name="heartCheckbox" Style="{StaticResource heartCheckboxStyle}" Margin="6,1,0,0" Checked="heartCheckbox_Checked" Click="heartCheckbox_Click"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Margin="0,18,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50">
